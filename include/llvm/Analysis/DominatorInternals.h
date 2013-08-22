@@ -88,7 +88,12 @@ unsigned DFSPass(DominatorTreeBase<typename GraphT::NodeType>& DT,
 
     // Increment the successor number for the next time we get to it.
     ++Worklist.back().second;
-    
+
+    // Clang may put NULL successors in the CFG
+    if (!*NextSucc) {
+      continue;
+    }
+
     // Visit the successor next, if it isn't already visited.
     typename GraphT::NodeType* Succ = *NextSucc;
 
